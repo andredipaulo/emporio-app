@@ -318,6 +318,12 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        ['header' => 'registrations'],
+        [
+            'text' => 'categories',
+            'url'  => 'category',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
