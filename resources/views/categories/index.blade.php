@@ -9,11 +9,6 @@
                 <div class="col-sm-6">
                     <h1>Categorias</h1>
                 </div>
-                <!--div class="col-sm-6">
-                    <ol class="float-sm-right">
-
-                    </ol>
-                </div-->
             </div>
         </div>
     </section>
@@ -68,11 +63,11 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <input type="hidden" id="idCategory" class="form-control">
+                            <input type="hidden" id="id" class="form-control">
 
                             <div class="form-group col-12">
-                                <label for="nameCategory">Nome</label>
-                                <input type="text" class="form-control" name="nameCategory" id="nameCategory" placeholder="Categoria">
+                                <label for="name">Nome</label>
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Categoria">
                             </div>
                         </div>
                     </div>
@@ -104,7 +99,7 @@
         })
 
         function loaderCategory(pagina){
-            $.get( '/category/paginator', {page: pagina}, function(resp) {
+            $.get( '/api/categories', {page: pagina}, function(resp) {
                 // console.log(resp);
                 montarTabela(resp);
                 montarPaginator(resp);
@@ -199,14 +194,14 @@
         }
 
         function showForm(){
-            $('#idCategory').val('');
-            $('#nameCategory').val('');
+            $('#id').val('');
+            $('#name').val('');
             $('#dlgCategory').modal('show');
         }
 
         $('#formCategory').submit( function (e){
             e.preventDefault();
-            if ($('#idCategory').val() != ""){
+            if ($('#id').val() != ""){
                 update();
             }else{
                 add();
@@ -216,10 +211,10 @@
 
         function add(){
             category = {
-                nameCategory : $('#nameCategory').val(),
+                name : $('#name').val(),
             };
 
-            $.post('/api/category', category, function (data){
+            $.post('/api/categories', category, function (data){
                 category = JSON.parse(data);
                 line = showLine(category);
                 $('#tableCategory>tbody').append(line);
@@ -231,7 +226,7 @@
             if (confirm('Realmente quer excluir?\nPressione Ok ou Cancelar.')) {
                 $.ajax({
                     type: "DELETE",
-                    url: "/api/category/" + id,
+                    url: "/api/categories/" + id,
                     context: this,
                     success: function () {
                         lines = $("#tableCategory>tbody>tr");
@@ -250,9 +245,9 @@
         };
 
         function edit(id) {
-            $.getJSON('/api/category/' + id, function( data ){
-                $('#idCategory').val(data.id);
-                $('#nameCategory').val(data.name);
+            $.getJSON('/api/categories/' + id, function( data ){
+                $('#id').val(data.id);
+                $('#name').val(data.name);
 
                 $('#dlgCategory').modal('show');
             });
@@ -260,13 +255,13 @@
 
         function update(){
             category = {
-                idCategory : $('#idCategory').val(),
-                nameCategory : $('#nameCategory').val(),
+                id : $('#id').val(),
+                name : $('#name').val(),
             };
 
             $.ajax({
                 type: "PUT",
-                url: "/api/category/" + category.idCategory,
+                url: "/api/categories/" + category.id,
                 context: this,
                 data: category,
                 success: function (data) {

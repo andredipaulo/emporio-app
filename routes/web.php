@@ -20,5 +20,6 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/category', [App\Http\Controllers\CategoryController::class, 'view'])->name('category');
-Route::get('/category/paginator', [App\Http\Controllers\CategoryController::class, 'paginator']);
+Route::get('/categories', function (){
+    return view('categories.index');
+});
