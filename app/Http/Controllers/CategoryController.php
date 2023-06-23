@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function view()
+    private $category;
+
+    public function __construct(Category $category)
     {
-        return view('categories.index');
+        $this->category = $category;
     }
 
     /**
@@ -19,22 +21,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return json_encode(Category::all());
-    }
-
-    public function paginator()
-    {
-        return Category::paginate(5);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $this->category->paginate(5);
     }
 
     /**
@@ -45,70 +32,43 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $categoria = new Category();
-        $categoria->name = $request['nameCategory'];
-        $categoria->save();
-
-        return json_encode($categoria);
+        return json_encode(
+            $this->category->create( $request->all() )
+        );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
-        $categoria = Category::find($id);
-        if(isset($categoria)){
-            return json_encode($categoria);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $categoria = Category::find($id);
-        if(isset($categoria)){
-            return view('categories.edit', compact('categoria'));
-        }
+        return $category;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        $categoria = Category::find($id);
-        if(isset($categoria)){
-            $categoria->name = $request['nameCategory'];
-            $categoria->save();
-
-            return json_encode($categoria);
-        }
+        $category->update( $request->all()); //true or false
+        return json_encode( $category );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Category $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
-        if(isset($category)){
-            $category->delete();
-        }
+        return $category->delete();
     }
 }
