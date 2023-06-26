@@ -23,3 +23,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/categories', function (){
     return view('categories.index');
 });
+Route::get('/types', function (){
+    return view('types.index');
+});

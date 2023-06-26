@@ -18,4 +18,5 @@ return [
     'Information'                   => 'Informação',
     'registrations'                 => 'Cadastros',
     'categories'                    => 'Categorias',
+    'types'                         => 'Tipos',
 ];

@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Type;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class TypeController extends Controller
 {
-    private $category;
+    private $type;
 
-    public function __construct(Category $category)
+    public function __construct(Type $type)
     {
-        $this->category = $category;
+        $this->type = $type;
     }
 
     /**
@@ -23,8 +21,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return $this->category
-            ->with(['types'])
+        return $this->type
+            ->with(['category'])
             ->paginate(5);
     }
 
@@ -37,48 +35,46 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         return json_encode(
-            $this->category->create( $request->all() )
+            $this->type->create( $request->all() )
         );
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  Category  $category
+     * @param  Type $type
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Type $type)
     {
-        return $category;
+        return $type;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  Category $category
+     * @param  Type $type
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Type $type)
     {
-        $category->update( $request->all()); //true or false
-        return json_encode( $category );
+        $type
+            ->update( $request->all() ); //true or false
+        return json_encode(
+            $type
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Category $category
+     * @param  Type $type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Type $type)
     {
-        return $category->delete();
-    }
-
-    public function listAll()
-    {
-        return json_encode( $this->category->all() );
+        return $type->delete();
     }
 
 }
